@@ -1,0 +1,89 @@
+SplashAcitivity.java
+--------------------
+package com.itcuties.tutorial.android;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+public class SplashActivity extends Activity {
+
+	private static String TAG = SplashActivity.class.getName();
+	private static long SLEEP_TIME = 3;	// Sleep for some time
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+      	this.requestWindowFeature(Window.FEATURE_NO_TITLE);	// Removes title bar
+      	this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);	// Removes notification bar
+        
+      	setContentView(R.layout.splash);
+        
+        // Start timer and launch main activity
+        IntentLauncher launcher = new IntentLauncher();
+        launcher.start();
+	}
+	public void onStart()
+    {
+		setContentView(R.layout.splash);
+        super.onStart();
+        ImageView backgroundImg = (ImageView) findViewById(R.id.image);
+        backgroundImg.setBackgroundColor(Color.rgb(100, 100, 50));
+    }
+	private class IntentLauncher extends Thread {
+    
+		@Override
+    	/**
+    	 * Sleep for some time and than start new activity.
+    	 */
+		public void run() {
+    		try {
+            	// Sleeping
+    			Thread.sleep(SLEEP_TIME*1000);
+            } catch (Exception e) {
+            	Log.e(TAG, e.getMessage());
+            }
+            
+            // Start main activity
+          	Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+          	SplashActivity.this.startActivity(intent);
+          	SplashActivity.this.finish();
+    	}
+    }
+	
+}
+
+
+
+
+for splash.xml
+-------------
+
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:background="#ee3338"> 
+
+<!--         <TextView -->
+<!--             android:id="@+id/textView1" -->
+<!--             android:layout_width="wrap_content" -->
+<!--             android:layout_height="wrap_content" -->
+<!--             android:layout_centerHorizontal="true" -->
+<!--             android:layout_centerVertical="true" -->
+<!--             android:text="Loading..." -->
+<!--             android:textAppearance="?android:attr/textAppearanceLarge" /> -->
+		<ImageView
+		    android:id="@+id/image"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_centerHorizontal="true"
+		    android:layout_centerVertical="true"
+		    android:scaleType="centerCrop"
+		    android:src="@drawable/splash" />
+		</RelativeLayout>
